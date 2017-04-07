@@ -1,7 +1,8 @@
 import {IAction} from "../model";
 import {GetLatLng, SetMap} from "../helpers";
 import {Richmarker} from "./richmarker";
-declare const RichMarker: any | google.maps.Marker;
+import {Assets} from "../assets";
+import {Style} from "../style";
 
 export class Destination {
     marker;
@@ -32,6 +33,33 @@ export class Destination {
     }
 
     private getContent(action: IAction): string {
-        return "ooo"
+        if(action.eta) {
+            let img = Assets.destination;
+            return `
+        <div style="${Style.destinationMarker}${Style.noSelect}">
+            <img height="58px" src="${img}" alt="">
+            <div style="${Style.eta}">
+                <div style="margin: auto; text-align: center"><span id="eta-time">${this.secToMin(action.display.duration_remaining)}</span><br> min</div>
+            </div>
+        </div>
+        `
+        } else {
+            let img = Assets.destinationNoEta;
+            return `
+        <div style="${Style.destinationMarker}${Style.noSelect}">
+            <img height="58px" src="${img}" alt="">
+            <div style="${Style.eta}">
+                
+            </div>
+        </div>
+        `
+        }
+
+
+
+    }
+
+    private secToMin(durationMin) {
+        return Math.ceil(durationMin/ 60)
     }
 }

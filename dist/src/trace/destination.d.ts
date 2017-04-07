@@ -6,4 +6,5 @@ export declare class Destination {
     getPosition(): any;
     clear(): void;
     private getContent(action);
+    private secToMin(durationMin);
 }
