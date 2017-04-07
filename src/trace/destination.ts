@@ -47,7 +47,7 @@ export class Destination {
             let img = Assets.destinationNoEta;
             return `
         <div style="${Style.destinationMarker}${Style.noSelect}">
-            <img height="58px" src="${img}" alt="">
+            <img height="50px" src="${img}" alt="">
             <div style="${Style.eta}">
                 
             </div>

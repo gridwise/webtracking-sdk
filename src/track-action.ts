@@ -54,12 +54,12 @@ export class TrackAction {
 
     private trace() {
         if(this.action.display.show_summary) {
-            this.showSummary()
+            this.showSummary();
         } else {
             this.anim.start(this.action, this.map);
-            this.startActionPoll()
+            this.startActionPoll();
+            this.traceDestination()
         }
-        this.traceDestination()
     }
 
     private startActionPoll() {
@@ -82,9 +82,9 @@ export class TrackAction {
         if(this.action.display.show_summary) {
             this.showSummary()
         } else {
-            this.anim.update(action)
+            this.anim.update(action);
+            this.traceDestination();
         };
-        this.traceDestination();
         this.options.onActionUpdate && this.options.onActionUpdate(action)
     }
 
