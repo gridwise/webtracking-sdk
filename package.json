@@ -16,6 +16,7 @@
   "author": "Gaurav Mukherjee",
   "license": "ISC",
   "devDependencies": {
+    "@types/node": "^7.0.22",
     "ts-loader": "^2.0.3",
     "typescript": "^2.2.2",
     "url-loader": "^0.5.8",
