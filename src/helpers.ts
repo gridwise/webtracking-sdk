@@ -11,7 +11,7 @@ export function GetReqOpt(pk: string) {
         headers: {
             "authorization": "token " + pk,
             "content-type": "application/json",
-            "X-Hypertrack-Client": "hypertrack/javascriptSDK"
+            "X-Hypertrack-Client": "hypertrack/javascript-SDK"
         }
     }
 }
