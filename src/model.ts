@@ -37,6 +37,26 @@ export interface IAction {
 
 export interface ISubAccount {
 
+    id: string,
+    type: string,
+    token: ISubAccountToken,
+    account: IAccount
+}
+
+export interface ISubAccountToken {
+    key: string,
+    scope: string
+}
+
+export interface IAccount {
+    name: string | null,
+    tagline: string | null,
+    id: string,
+    ios_app_download_url: string | null,
+    android_app_download_url: string | null,
+    logo: string | null,
+    ios_deeplink_url: string | null,
+    android_deeplink_url: string | null
 }
 
 export interface IUser {
@@ -67,9 +87,10 @@ export interface IPlace {
 export interface ITrackOption {
     originLatLng?: [number, number], //optional, to set default map center
     mapId: string, //id of DOM where map is to be rendered
-    bottomPadding: number,
-    onError: (error: any) => void,
-    onReady: (trackAction: TrackAction) => void,
-    onActionReady: (action: IAction) => void,
-    onActionUpdate: (action: IAction) => void
+    bottomPadding?: number,
+    onError?: (error: any) => void,
+    onReady?: (trackAction: TrackAction) => void,
+    onActionReady?: (action: IAction) => void,
+    onActionUpdate?: (action: IAction) => void,
+    onAccountReady?: (subAccount: ISubAccount, action: IAction) => void
 }
