@@ -81,7 +81,9 @@ export class TrackAction {
         if(this.action.display.show_summary) {
             this.showSummary();
         } else {
-            this.anim.start(this.action, this.map);
+            if (this.action.time_aware_polyline) {
+                this.anim.start(this.action, this.map);
+            }
             this.startActionPoll();
             this.traceDestination()
         }
