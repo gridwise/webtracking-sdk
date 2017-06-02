@@ -55,7 +55,7 @@ export class TrackAction {
 
     private getFirstOrigin(): google.maps.LatLng {
         let origin = new google.maps.LatLng(37.370641488030245, -122.07498079040533);
-        if(this.action.user && this.action.user.last_location) {
+        if(this.action.user && this.action.user.last_location && this.action.user.last_location['geojson']) {
             origin = GetLatLng(this.action.user.last_location, 'geojson')
         } else if(this.action.started_place) {
             origin = GetLatLng(this.action.started_place)
