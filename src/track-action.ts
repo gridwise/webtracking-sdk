@@ -31,6 +31,7 @@ export class TrackAction {
             if(this.destination.getMap()) {
                 let bounds = this.anim.getBounds();
                 bounds.extend(this.destination.getPosition());
+                this.map.fitBounds(bounds);
                 bounds = this.extendedBounds(bounds, -this.options.bottomPadding);
                 this.map.fitBounds(bounds);
                 this.map.panToBounds(bounds);
