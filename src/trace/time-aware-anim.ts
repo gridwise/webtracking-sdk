@@ -114,10 +114,18 @@ export class TimeAwareAnim {
         return factor * this.animProps.interval;
     }
 
+    private getVehicleType(action: IAction) {
+        let actionVehicleType = action.vehicle_type;
+        if (actionVehicleType === 'car' || actionVehicleType === 'motorcycle') {
+            return actionVehicleType;
+        }
+        return 'car';
+    }
+
     private setMarker(bearing, action) {
         //todo
         let angle = bearing || 0;
-        let vehicleType = action.vehicle_type || 'car';
+        let vehicleType = this.getVehicleType(action);
         let content = "<img id='bike-marker' class='ht-rotate-marker' style='transform: rotate(" +
             angle +
             "deg)' height='50px' src='" +

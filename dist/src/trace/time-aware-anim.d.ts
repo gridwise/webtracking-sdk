@@ -27,6 +27,7 @@ export declare class TimeAwareAnim {
     hide(): void;
     clear(): void;
     private getTimeToAdd();
+    private getVehicleType(action);
     private setMarker(bearing, action);
     private setColor(action);
     private currentPolylineData();
