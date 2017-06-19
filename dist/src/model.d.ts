@@ -14,7 +14,6 @@ export interface IAction {
         duration_elapsed: number | null;
         distance_remaining: number | null;
         distance_covered: number | null;
-        speed: number | null;
         show_summary: boolean;
         status_text: string;
         sub_status_text: string;
@@ -63,6 +62,10 @@ export interface IUser {
     phone: number | string | null;
     last_heartbeat_at: string | null;
     photo: string;
+    display: {
+        speed: number | null;
+        battery: number | null;
+    };
     last_location: {
         geojson: IPlace;
     };
