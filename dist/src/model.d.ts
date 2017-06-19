@@ -13,12 +13,11 @@ export interface IAction {
         duration_remaining: number | null;
         duration_elapsed: number | null;
         distance_remaining: number | null;
-        distance_covered: number | null;
         show_summary: boolean;
         status_text: string;
         sub_status_text: string;
     };
-    distance: number;
+    distance: number | null;
     encoded_polyline: string;
     eta: string | null;
     expected_place: IPlace;
