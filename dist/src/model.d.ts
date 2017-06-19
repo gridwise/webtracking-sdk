@@ -11,6 +11,10 @@ export interface IAction {
     created_at: string | null;
     display: {
         duration_remaining: number | null;
+        duration_elapsed: number | null;
+        distance_remaining: number | null;
+        distance_covered: number | null;
+        speed: number | null;
         show_summary: boolean;
         status_text: string;
         sub_status_text: string;
@@ -25,6 +29,7 @@ export interface IAction {
     short_code: string;
     started_at: string | null;
     started_place: IPlace | null;
+    ended_at: string | null;
     status: string;
     suspended_at: string | null;
     time_aware_polyline: string;
