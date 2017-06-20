@@ -6,11 +6,13 @@ import {Color} from "./color";
 import {Destination} from "./trace/destination";
 import {StartMarker} from "./trace/start-marker";
 import * as _ from "underscore";
+import {EndMarker} from "./trace/end-marker";
 
 export class TrackAction {
     map: google.maps.Map;
     private anim: TimeAwareAnim = new TimeAwareAnim({strokeColor: Color.darkGreen});
     startMarker: StartMarker = new StartMarker();
+    endMarker: EndMarker = new EndMarker();
     private actionPoll;
     destination: Destination = new Destination();
     action: IAction;
@@ -142,13 +144,18 @@ export class TrackAction {
             map: this.map,
             path: polylineArray,
             strokeColor: "#343341",
+            strokeOpacity: 0.3,
             icons: []
         });
         if (polylineArray.length > 0) {
             this.startMarker.setMarkerDiv();
+            this.endMarker.setMarkerDiv();
             let startPoint = _.first(polylineArray);
+            let endPoint = _.last(polylineArray);
             let startPosition = new google.maps.LatLng(startPoint.lat(), startPoint.lng());
+            let lastPosition = new google.maps.LatLng(endPoint.lat(), endPoint.lng());
             this.startMarker.render(startPosition, this.map);
+            this.endMarker.render(lastPosition, this.map);
         }
         setTimeout(() => {
             this.fitPolyline(polylineArray);

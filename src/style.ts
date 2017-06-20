@@ -9,6 +9,7 @@ export const Style = {
     flexRow: `display: flex; flex-direction: row`,
     destinationMarker: `display: flex; flex-direction: column; align-item: center; position: relative;`,
     startMarker: `display: flex; flex-direction: column; align-item: center; position: relative;`,
+    endMarker: `display: flex; flex-direction: column; align-item: center; position: relative;`,
     eta: `position: absolute;
     top: 5px;
     left: 4px;

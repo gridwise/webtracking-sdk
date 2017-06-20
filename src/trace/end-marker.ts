@@ -3,7 +3,7 @@ import {Style} from "../style";
 import {Assets} from "../assets";
 declare const RichMarkerPosition: any;
 
-export class StartMarker {
+export class EndMarker {
   marker;
 
   constructor() {
@@ -26,9 +26,9 @@ export class StartMarker {
   }
 
   getDefaultMarkerContent() {
-    let img = Assets.startPosition;
+    let img = Assets.endPosition;
       return `
-          <div style="${Style.startMarker}${Style.noSelect}">
+          <div style="${Style.endMarker}${Style.noSelect}">
               <img height="20px" src="${img}" alt="">
           </div>
       `;

@@ -54,7 +54,6 @@ export class TimeAwareAnim {
         this.polyline.setOptions({
             map: this.map,
             strokeOpacity: 1,
-            // path: polylineData.path
         });
         this.userMarker.render(_.last(polylineData.path), this.map);
         // this.marker.setPosition(_.last(polylineData.path));
