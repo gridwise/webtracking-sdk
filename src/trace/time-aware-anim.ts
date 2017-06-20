@@ -136,9 +136,7 @@ export class TimeAwareAnim {
     private setUserMarkerContent(bearing, action) {
         let angle = bearing || 0;
         let vehicleAssetDetails = this.getVehicleAssetDetails(action);
-        let content = `
-            <img id ='bike-marker' class='ht-rotate-marker' style="transform: rotate('${angle}deg')" height="${vehicleAssetDetails.height}" src="${vehicleAssetDetails.img}" />
-        `;
+        let content = `<img id ='bike-marker' class='ht-rotate-marker' style='transform: rotate(${angle}deg)' height="${vehicleAssetDetails.height}" src="${vehicleAssetDetails.img}" />`;
         // let content = "<img id='bike-marker' class='ht-rotate-marker' style='transform: rotate(" +
         //     angle +
         //     "deg)' height='50px' src='" +
