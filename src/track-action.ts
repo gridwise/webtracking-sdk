@@ -143,8 +143,9 @@ export class TrackAction {
         new google.maps.Polyline({
             map: this.map,
             path: polylineArray,
-            strokeColor: "#343341",
-            strokeOpacity: 0.3,
+            strokeColor: "rgb(223, 92, 193)",
+            strokeOpacity: 1,
+            strokeWeight: 3,
             icons: []
         });
         if (polylineArray.length > 0) {

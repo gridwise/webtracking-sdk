@@ -3,6 +3,8 @@ export declare const Assets: {
     destinationNoEta: any;
     startPosition: any;
     endPosition: any;
+    motorcycle: any;
+    defaultHeroMarker: any;
 };
 export declare const VehicleAssets: {
     "car": string;

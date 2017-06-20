@@ -1,8 +1,10 @@
 export const Assets = {
     destination: require("url-loader!./assets/destination-eta.png"),
     destinationNoEta:  require("url-loader!./assets/destionation-no-eta.png"),
-    startPosition: require("url-loader!./assets/start-position-marker"),
-    endPosition: require("url-loader!./assets/end-position-marker")
+    startPosition: require("url-loader!./assets/start-position-marker.png"),
+    endPosition: require("url-loader!./assets/end-position-marker.png"),
+    motorcycle: require("url-loader!./assets/vehicle-motorcycle.png"),
+    defaultHeroMarker: require("url-loader!./assets/default-hero-marker.png"),
 };
 
 export const VehicleAssets = {
