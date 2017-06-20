@@ -138,51 +138,8 @@ export class TrackAction {
         new google.maps.Polyline({
             map: this.map,
             path: polylineArray,
-            strokeColor: "rgb(10, 97, 194)",
-            icons: [
-                {
-                    icon: {
-                        path: google.maps.SymbolPath.CIRCLE,
-                        fillColor: '#E63629',
-                        fillOpacity: 1,
-                        strokeOpacity: 0,
-                        strokeColor: '#E63629',
-                        scale: 4
-                    },
-                    offset: '100%',
-                },
-                {
-                    icon: {
-                        path: google.maps.SymbolPath.CIRCLE,
-                        fillOpacity: 0,
-                        strokeWeight: 1,
-                        strokeColor: '#E63629',
-                        scale: 6
-                    },
-                    offset: '100%',
-                },
-                {
-                    icon: {
-                        path: google.maps.SymbolPath.CIRCLE,
-                        fillColor: '#1C9A46',
-                        fillOpacity: 1,
-                        strokeOpacity: 0,
-                        strokeColor: '#1C9A46',
-                        scale: 4
-                    },
-                    offset: '0%',
-                },
-                {
-                    icon: {
-                        path: google.maps.SymbolPath.CIRCLE,
-                        fillOpacity: 0,
-                        strokeWeight: 1,
-                        strokeColor: '#1C9A46',
-                        scale: 6
-                    },
-                    offset: '0%',
-                }
-            ]
+            strokeColor: "#343341",
+            icons: []
         });
         setTimeout(() => {
             this.fitPolyline(polylineArray);
