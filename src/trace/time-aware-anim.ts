@@ -119,9 +119,11 @@ export class TimeAwareAnim {
         switch(actionVehicleType) {
             case 'car':
                 img = Assets.vehicleCar;
+                height = '50px';
                 break;
             case 'motorcycle':
                 img = Assets.motorcycle;
+                height = '50px';
                 break;
             default:
                 img = Assets.defaultHeroMarker;
@@ -137,11 +139,6 @@ export class TimeAwareAnim {
         let angle = bearing || 0;
         let vehicleAssetDetails = this.getVehicleAssetDetails(action);
         let content = `<img id ='bike-marker' class='ht-rotate-marker' style='transform: rotate(${angle}deg)' height="${vehicleAssetDetails.height}" src="${vehicleAssetDetails.img}" />`;
-        // let content = "<img id='bike-marker' class='ht-rotate-marker' style='transform: rotate(" +
-        //     angle +
-        //     "deg)' height='50px' src='" +
-        //     vehicleAssetDetails.img +
-        //     "'>";
         this.userMarker.setMarkerDiv(content)
     }
 
