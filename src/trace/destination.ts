@@ -52,8 +52,7 @@ export class Destination {
             return `
         <div style="${Style.destinationMarker}${Style.noSelect}">
             <img height="50px" src="${img}" alt="">
-            <div style="${Style.eta}">
-                
+            <div style="${Style.eta}">           
             </div>
         </div>
         `

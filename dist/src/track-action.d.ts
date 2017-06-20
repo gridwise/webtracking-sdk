@@ -1,9 +1,11 @@
 /// <reference types="googlemaps" />
 import { IAction, ITrackOption } from "./model";
 import { Destination } from "./trace/destination";
+import { StartMarker } from "./trace/start-marker";
 export declare class TrackAction {
     map: google.maps.Map;
     private anim;
+    startMarker: StartMarker;
     private actionPoll;
     destination: Destination;
     action: IAction;

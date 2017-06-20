@@ -71,8 +71,7 @@ export class TimeAwareAnim {
                 this.clearAnimPoll()
             });
             let polylineData = this.currentPolylineData();
-            this.userMarker.setPosition(_.last(polylineData.path))
-            // this.marker.setPosition(_.last(polylineData.path));
+            this.userMarker.setPosition(_.last(polylineData.path));
             this.setMarker(polylineData.bearing, action);
             if(this.positionUpdateCallback && typeof this.positionUpdateCallback == 'function') {
                 this.positionUpdateCallback(this.userMarker.getPosition(), this.currentTime)

@@ -3,5 +3,6 @@ export declare const Style: {
     flexColumn: string;
     flexRow: string;
     destinationMarker: string;
+    startMarker: string;
     eta: string;
 };
