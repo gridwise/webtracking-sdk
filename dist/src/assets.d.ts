@@ -4,6 +4,7 @@ export declare const Assets: {
     startPosition: any;
     endPosition: any;
     motorcycle: any;
+    vehicleCar: any;
     defaultHeroMarker: any;
 };
 export declare const VehicleAssets: {

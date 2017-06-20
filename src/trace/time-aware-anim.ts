@@ -4,7 +4,7 @@ import {IAction, IUser} from "../model";
 import * as moment from "moment";
 import * as _ from "underscore";
 import {UserMarker} from "./user-marker";
-import {VehicleAssets} from "../assets";
+import {Assets, VehicleAssets} from "../assets";
 
 export class TimeAwareAnim {
     timeAwarePolyline: TimeAwarePolyline = new TimeAwarePolyline();
@@ -71,7 +71,7 @@ export class TimeAwareAnim {
             });
             let polylineData = this.currentPolylineData();
             this.userMarker.setPosition(_.last(polylineData.path));
-            this.setMarker(polylineData.bearing, action);
+            this.setUserMarkerContent(polylineData.bearing, action);
             if(this.positionUpdateCallback && typeof this.positionUpdateCallback == 'function') {
                 this.positionUpdateCallback(this.userMarker.getPosition(), this.currentTime)
             }
@@ -112,28 +112,36 @@ export class TimeAwareAnim {
         return factor * this.animProps.interval;
     }
 
-    private getVehicleType(action: IAction) {
+    private getVehicleAsset(action: IAction) {
+        let img = Assets.defaultHeroMarker;
         let actionVehicleType = action.vehicle_type;
-        if (actionVehicleType === 'car' || actionVehicleType === 'motorcycle') {
-            return actionVehicleType;
+        switch(actionVehicleType) {
+            case 'car':
+                img = Assets.vehicleCar;
+                break;
+            case 'motorcycle':
+                img = Assets.motorcycle;
+                break;
+            default:
+                img = Assets.defaultHeroMarker;
+                break;
         }
-        return 'car';
+        return img;
     }
 
-    private setMarker(bearing, action) {
-        //todo
+    private setUserMarkerContent(bearing, action) {
         let angle = bearing || 0;
-        let vehicleType = this.getVehicleType(action);
+        let vehicleAsset = this.getVehicleAsset(action);
         let content = "<img id='bike-marker' class='ht-rotate-marker' style='transform: rotate(" +
             angle +
             "deg)' height='50px' src='" +
-            VehicleAssets[vehicleType] +
+            vehicleAsset +
             "'>";
         this.userMarker.setMarkerDiv(content)
     }
 
     private setColor(action: IAction) : void {
-        let color = this.polylineOption ? this.polylineOption.strokeColor : Color.grey4;
+        let color = this.polylineOption ? this.polylineOption.strokeColor : Color.htPink;
         this.polyline.setOptions({strokeColor: color})
     }
 
