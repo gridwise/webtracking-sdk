@@ -4,5 +4,6 @@ export declare const Style: {
     flexRow: string;
     destinationMarker: string;
     startMarker: string;
+    endMarker: string;
     eta: string;
 };
