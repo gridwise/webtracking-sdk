@@ -21,6 +21,7 @@ export class TrackAction {
         this.action = action;
         this.pk = pk;
         this.options = options;
+        console.log("Test log");
         this.renderMap();
     }
 
