@@ -10,7 +10,7 @@ import {EndMarker} from "./trace/end-marker";
 
 export class TrackAction {
     map: google.maps.Map;
-    private anim: TimeAwareAnim = new TimeAwareAnim({strokeColor: Color.darkGreen});
+    private anim: TimeAwareAnim = new TimeAwareAnim({strokeColor: Color.htPink});
     startMarker: StartMarker = new StartMarker();
     endMarker: EndMarker = new EndMarker();
     private actionPoll;

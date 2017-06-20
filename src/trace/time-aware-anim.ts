@@ -112,8 +112,9 @@ export class TimeAwareAnim {
         return factor * this.animProps.interval;
     }
 
-    private getVehicleAsset(action: IAction) {
+    private getVehicleAssetDetails(action: IAction) {
         let img = Assets.defaultHeroMarker;
+        let height = '30px';
         let actionVehicleType = action.vehicle_type;
         switch(actionVehicleType) {
             case 'car':
@@ -126,17 +127,23 @@ export class TimeAwareAnim {
                 img = Assets.defaultHeroMarker;
                 break;
         }
-        return img;
+        return {
+            img,
+            height
+        };
     }
 
     private setUserMarkerContent(bearing, action) {
         let angle = bearing || 0;
-        let vehicleAsset = this.getVehicleAsset(action);
-        let content = "<img id='bike-marker' class='ht-rotate-marker' style='transform: rotate(" +
-            angle +
-            "deg)' height='50px' src='" +
-            vehicleAsset +
-            "'>";
+        let vehicleAssetDetails = this.getVehicleAssetDetails(action);
+        let content = `
+            <img id ='bike-marker' class='ht-rotate-marker' style="transform: rotate('${angle}deg')" height="${vehicleAssetDetails.height}" src="${vehicleAssetDetails.img}" />
+        `;
+        // let content = "<img id='bike-marker' class='ht-rotate-marker' style='transform: rotate(" +
+        //     angle +
+        //     "deg)' height='50px' src='" +
+        //     vehicleAssetDetails.img +
+        //     "'>";
         this.userMarker.setMarkerDiv(content)
     }
 
