@@ -21,13 +21,14 @@ export declare class TrackAction {
     private getFirstOrigin();
     private makeMap();
     private trace();
+    traceStart(): void;
     private startActionPoll();
     private fetchAction();
     private updateAction(action);
     private traceDestination();
-    private showSummary();
+    private showSummary(bottomPadding?);
     private clear();
-    private drawAndFitPolyline(polylineEncoded);
+    private drawAndFitPolyline(polylineEncoded, bottomPadding?);
     private fitPolyline(polylineMvc);
     private fitExtended(polylineMvc);
     private extendedLocation(position, y);
