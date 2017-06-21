@@ -106,6 +106,7 @@ export class TrackAction {
             let polylineArray = google.maps.geometry.encoding.decodePath(this.action.encoded_polyline);
             let startPoint = _.first(polylineArray);
             let startPosition = new google.maps.LatLng(startPoint.lat(), startPoint.lng());
+            this.startMarker.setMarkerDiv();
             this.startMarker.render(startPosition, this.map);
         }
     }
