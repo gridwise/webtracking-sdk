@@ -7,6 +7,7 @@ import {Destination} from "./trace/destination";
 import {StartMarker} from "./trace/start-marker";
 import * as _ from "underscore";
 import {EndMarker} from "./trace/end-marker";
+import * as Utils from './utils';
 
 export class TrackAction {
     map: google.maps.Map;
@@ -26,15 +27,15 @@ export class TrackAction {
         this.action = action;
         this.pk = pk;
         this.options = options;
-        if (options.vehicleIcon) {
-            this.anim.setCustomVehicleIcon(options.vehicleIcon);
+        if (options.mapOptions.vehicleIcon) {
+            this.anim.setCustomVehicleIcon(options.mapOptions.vehicleIcon);
         }
         this.renderMap();
     }
 
-    resetBounds(bottomPadding: number = this.options.bottomPadding) {
+    resetBounds(bottomPadding: number = this.options.mapOptions.bottomPadding) {
         if(this.action.display.show_summary) {
-            this.showSummary()
+            this.showSummary(bottomPadding);
         } else {
             if(this.destination.getMap()) {
                 let bounds = this.anim.getBounds();
@@ -95,7 +96,17 @@ export class TrackAction {
                 this.anim.start(this.action, this.map);
             }
             this.startActionPoll();
-            this.traceDestination()
+            this.traceDestination();
+            this.traceStart();
+        }
+    }
+
+    traceStart() {
+        if (this.action.encoded_polyline)  {
+            let polylineArray = google.maps.geometry.encoding.decodePath(this.action.encoded_polyline);
+            let startPoint = _.first(polylineArray);
+            let startPosition = new google.maps.LatLng(startPoint.lat(), startPoint.lng());
+            this.startMarker.render(startPosition, this.map);
         }
     }
 
@@ -121,7 +132,7 @@ export class TrackAction {
         } else {
             this.anim.update(action);
             this.traceDestination();
-        };
+        }
         this.options.onActionUpdate && this.options.onActionUpdate(action)
     }
 
@@ -129,8 +140,8 @@ export class TrackAction {
         this.destination.update(this.action, this.map)
     }
 
-    private showSummary() {
-        this.drawAndFitPolyline(this.action.encoded_polyline);
+    private showSummary(bottomPadding: number = this.options.mapOptions.bottomPadding) {
+        this.drawAndFitPolyline(this.action.encoded_polyline, bottomPadding);
         this.clear()
     }
 
@@ -140,7 +151,7 @@ export class TrackAction {
         if(this.actionPoll) clearTimeout(this.actionPoll)
     }
 
-    private drawAndFitPolyline(polylineEncoded) {
+    private drawAndFitPolyline(polylineEncoded, bottomPadding: number = this.options.mapOptions.bottomPadding) {
         let polylineArray = google.maps.geometry.encoding.decodePath(polylineEncoded);
         new google.maps.Polyline({
             map: this.map,
@@ -161,7 +172,8 @@ export class TrackAction {
             this.endMarker.render(lastPosition, this.map);
         }
         setTimeout(() => {
-            this.fitPolyline(polylineArray);
+            Utils.fitPolylineWithBottomPadding(this.map, polylineArray, bottomPadding);
+            // this.fitPolyline(polylineArray);
         }, 200);
     }
 
@@ -179,8 +191,8 @@ export class TrackAction {
         $.each(polylineMvc, (i, v) => {
             bounds.extend(v);
 
-            if(this.options.bottomPadding) {
-                bounds.extend(this.extendedLocation(v, -this.options.bottomPadding));
+            if(this.options.mapOptions.bottomPadding) {
+                bounds.extend(this.extendedLocation(v, -this.options.mapOptions.bottomPadding));
             }
         });
         this.map.fitBounds(bounds);

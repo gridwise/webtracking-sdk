@@ -11,9 +11,7 @@ export class TimeAwareAnim {
     map: google.maps.Map;
     customVehicleIcon: CustomVehicleIcon | null = null;
     userMarker: UserMarker = new UserMarker();
-    // marker: google.maps.Marker = new google.maps.Marker();
     started: boolean = false;
-    // marker: google.maps.Marker = new RichMarker({flat: true, anchor: RichMarkerPosition.MIDDLE});
     polyline: google.maps.Polyline = new google.maps.Polyline();
     currentTime: string;
     animPoll;
