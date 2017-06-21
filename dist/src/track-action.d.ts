@@ -29,8 +29,8 @@ export declare class TrackAction {
     private showSummary(bottomPadding?);
     private clear();
     private drawAndFitPolyline(polylineEncoded, bottomPadding?);
-    private fitPolyline(polylineMvc);
-    private fitExtended(polylineMvc);
+    private fitPolyline(polylineMvc, bottomPadding);
+    private fitExtended(polylineMvc, bottomPadding);
     private extendedLocation(position, y);
     private extendedBounds(bounds, y);
 }

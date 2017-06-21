@@ -172,27 +172,27 @@ export class TrackAction {
             this.endMarker.render(lastPosition, this.map);
         }
         setTimeout(() => {
-            Utils.fitPolylineWithBottomPadding(this.map, polylineArray, bottomPadding);
-            // this.fitPolyline(polylineArray);
+            //Utils.fitPolylineWithBottomPadding(this.map, polylineArray, bottomPadding);
+            this.fitPolyline(polylineArray, bottomPadding);
         }, 200);
     }
 
-    private fitPolyline(polylineMvc) {
+    private fitPolyline(polylineMvc, bottomPadding) {
         let bounds = new google.maps.LatLngBounds();
         $.each(polylineMvc, (i, v) => {
             bounds.extend(v);
         });
         this.map.fitBounds(bounds);
-        this.fitExtended(polylineMvc)
+        this.fitExtended(polylineMvc, bottomPadding)
     }
 
-    private fitExtended(polylineMvc) {
+    private fitExtended(polylineMvc, bottomPadding) {
         let bounds = new google.maps.LatLngBounds();
         $.each(polylineMvc, (i, v) => {
             bounds.extend(v);
-
-            if(this.options.mapOptions.bottomPadding) {
-                bounds.extend(this.extendedLocation(v, -this.options.mapOptions.bottomPadding));
+            let bottomPaddingValue = bottomPadding || this.options.mapOptions.bottomPadding;
+            if(bottomPaddingValue) {
+                bounds.extend(this.extendedLocation(v, -bottomPaddingValue));
             }
         });
         this.map.fitBounds(bounds);

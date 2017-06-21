@@ -32,8 +32,12 @@ export const fitPolylineWithBottomPadding = (map, polylineArray, bottomPadding) 
   let bounds = new google.maps.LatLngBounds();
   bounds = extendLatLngBounds(bounds, polylineArray);
   map.fitBounds(bounds);
+  let extendedBounds = new google.maps.LatLngBounds();
   polylineArray.forEach((latLng) => {
-    bounds.extend(getLatLngAtYDistance(map, latLng, bottomPadding));
+    extendedBounds.extend(latLng);
+    if (bottomPadding) {
+      extendedBounds.extend(getLatLngAtYDistance(map, latLng, -bottomPadding));
+    }
   });
-  map.fitBounds(bounds);
+  map.fitBounds(extendedBounds);
 };
