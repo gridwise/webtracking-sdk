@@ -22,7 +22,7 @@ export const extendLatLngBounds = (bounds, latLngArray) => {
     bounds = new google.maps.LatLngBounds();
   }
   if (!latLngArray) return bounds;
-  latLngArray.forEach((index, latLng) => {
+  latLngArray.forEach((latLng) => {
     bounds.extend(latLng);
   });
   return bounds;
@@ -32,6 +32,8 @@ export const fitPolylineWithBottomPadding = (map, polylineArray, bottomPadding) 
   let bounds = new google.maps.LatLngBounds();
   bounds = extendLatLngBounds(bounds, polylineArray);
   map.fitBounds(bounds);
-  let extendedBounds = extendBoundsBottomPadding(map, bounds, bottomPadding);
-  map.fitBounds(extendedBounds);
+  polylineArray.forEach((latLng) => {
+    bounds.extend(getLatLngAtYDistance(map, latLng, bottomPadding));
+  });
+  map.fitBounds(bounds);
 };
