@@ -1,4 +1,5 @@
 import {TrackAction} from "./track-action";
+import {CustomVehicleIcon} from "./trace/time-aware-anim";
 export interface IDecoded {
     action: IAction,
     sub_account: ISubAccount
@@ -94,7 +95,7 @@ export interface IPlace {
 export interface ITrackOption {
     originLatLng?: [number, number], //optional, to set default map center
     mapId: string, //id of DOM where map is to be rendered
-    vehicleIcon?: string,
+    vehicleIcon?: CustomVehicleIcon,
     bottomPadding?: number,
     onError?: (error: any) => void,
     onReady?: (trackAction: TrackAction) => void,

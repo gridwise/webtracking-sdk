@@ -26,7 +26,9 @@ export class TrackAction {
         this.action = action;
         this.pk = pk;
         this.options = options;
-        console.log("Test log");
+        if (options.vehicleIcon) {
+            this.anim.setCustomVehicleIcon(options.vehicleIcon);
+        }
         this.renderMap();
     }
 

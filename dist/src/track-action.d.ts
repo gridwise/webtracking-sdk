@@ -15,7 +15,7 @@ export declare class TrackAction {
     private pk;
     constructor();
     init(action: IAction, pk: string, options: ITrackOption): void;
-    resetBounds(): void;
+    resetBounds(bottomPadding?: number): void;
     setOptions(options: ITrackOption): void;
     private renderMap();
     private getFirstOrigin();

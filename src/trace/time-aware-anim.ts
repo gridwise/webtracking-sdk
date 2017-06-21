@@ -9,6 +9,7 @@ import {Assets, VehicleAssets} from "../assets";
 export class TimeAwareAnim {
     timeAwarePolyline: TimeAwarePolyline = new TimeAwarePolyline();
     map: google.maps.Map;
+    customVehicleIcon: CustomVehicleIcon | null = null;
     userMarker: UserMarker = new UserMarker();
     // marker: google.maps.Marker = new google.maps.Marker();
     started: boolean = false;
@@ -38,6 +39,13 @@ export class TimeAwareAnim {
             this.started = true;
         }
 
+    }
+
+    setCustomVehicleIcon(customVehicleIcon) {
+        if (customVehicleIcon && customVehicleIcon.src) {
+            this.customVehicleIcon = customVehicleIcon;
+            this.customVehicleIcon.height = this.customVehicleIcon.height || '30px';
+        }
     }
 
     update(action: IAction) {
@@ -113,6 +121,12 @@ export class TimeAwareAnim {
     }
 
     private getVehicleAssetDetails(action: IAction) {
+        if (this.customVehicleIcon) {
+            return {
+                img: this.customVehicleIcon.src,
+                height: this.customVehicleIcon.height
+            }
+        }
         let img = Assets.defaultHeroMarker;
         let height = '30px';
         let actionVehicleType = action.vehicle_type;
@@ -178,6 +192,11 @@ export class TimeAwareAnim {
     getPosition() {
         return this.userMarker.getPosition()
     }
+}
+
+export interface CustomVehicleIcon {
+    src: string,
+    height: string
 }
 
 interface AnimProps {
