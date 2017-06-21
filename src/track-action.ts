@@ -84,7 +84,16 @@ export class TrackAction {
             disableDefaultUI:true,
             scrollwheel: true,
             scaleControl: false,
-            clickableIcons: false
+            clickableIcons: false,
+            styles: [
+                {
+                    "stylers": [
+                        {
+                            "saturation": -100
+                        }
+                    ]
+                }
+            ]
         });
     }
 

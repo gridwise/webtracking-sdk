@@ -9,7 +9,6 @@ export class UserMarker {
             flat: true,
             zIndex: 100
         }, 'MIDDLE')
-
     }
 
     render(position, map) {
