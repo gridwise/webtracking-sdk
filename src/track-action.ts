@@ -30,7 +30,7 @@ export class TrackAction {
         this.renderMap();
     }
 
-    resetBounds() {
+    resetBounds(bottomPadding: number = this.options.bottomPadding) {
         if(this.action.display.show_summary) {
             this.showSummary()
         } else {
@@ -38,7 +38,7 @@ export class TrackAction {
                 let bounds = this.anim.getBounds();
                 bounds.extend(this.destination.getPosition());
                 this.map.fitBounds(bounds);
-                bounds = this.extendedBounds(bounds, -this.options.bottomPadding);
+                bounds = this.extendedBounds(bounds, -bottomPadding);
                 this.map.fitBounds(bounds);
                 this.map.panToBounds(bounds);
             } else {

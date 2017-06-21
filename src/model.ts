@@ -94,6 +94,7 @@ export interface IPlace {
 export interface ITrackOption {
     originLatLng?: [number, number], //optional, to set default map center
     mapId: string, //id of DOM where map is to be rendered
+    vehicleIcon?: string,
     bottomPadding?: number,
     onError?: (error: any) => void,
     onReady?: (trackAction: TrackAction) => void,
