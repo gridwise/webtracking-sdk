@@ -78,6 +78,7 @@ export class TrackAction {
 
     private makeMap() {
         let origin = this.getFirstOrigin();
+        let gMapsStyles = this.options.mapOptions.gMapsStyle || this.getDefaultGMapsStyle();
         this.map = new google.maps.Map(document.getElementById(this.options.mapId), {
             zoom: 14,
             center: origin,
@@ -85,16 +86,20 @@ export class TrackAction {
             scrollwheel: true,
             scaleControl: false,
             clickableIcons: false,
-            styles: [
-                {
-                    "stylers": [
-                        {
-                            "saturation": -100
-                        }
-                    ]
-                }
-            ]
+            styles: gMapsStyles
         });
+    }
+
+    private getDefaultGMapsStyle() {
+        return [
+            {
+                "stylers": [
+                    {
+                        "saturation": -100
+                    }
+                ]
+            }
+        ];
     }
 
     private trace() {

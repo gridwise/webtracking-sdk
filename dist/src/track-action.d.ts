@@ -20,6 +20,7 @@ export declare class TrackAction {
     private renderMap();
     private getFirstOrigin();
     private makeMap();
+    private getDefaultGMapsStyle();
     private trace();
     traceStart(): void;
     private startActionPoll();

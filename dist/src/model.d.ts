@@ -1,5 +1,7 @@
+/// <reference types="googlemaps" />
 import { TrackAction } from "./track-action";
 import { CustomVehicleIcon } from "./trace/time-aware-anim";
+import MapTypeStyle = google.maps.MapTypeStyle;
 export interface IDecoded {
     action: IAction;
     sub_account: ISubAccount;
@@ -94,7 +96,7 @@ export interface ITrackOption {
     onAccountReady?: (subAccount: ISubAccount, action: IAction) => void;
 }
 export interface IMapOptions {
-    gMapsStyle?: JSON;
+    gMapsStyle?: MapTypeStyle[];
     bottomPadding?: number;
     vehicleIcon?: CustomVehicleIcon;
     originLatLng?: [number, number];
