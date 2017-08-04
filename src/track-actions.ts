@@ -1,17 +1,12 @@
 import * as $ from "jquery";
 import {GetActionsBounds, GetBaseUrl, GetReqOpt, RenderGoogleMap} from "./helpers";
 import {
-  IAction, ISubAccount, ISubAccountData, ITrackActionResult, ITrackActionResults, ITrackedActions, ITrackedData,
-  ITrackingData,
-  ITrackingOptions
+  IAction, ISubAccount, ISubAccountData, ITrackActionResult, ITrackActionResults, ITrackedActions, ITrackingOptions
 } from "./model";
 import {TrackedAction} from "./track-action";
-import {actionToTrackingData} from "./actions.helper";
-import {TrackData} from "./track-data";
 
 export class HTTrackActions {
   trackActions: ITrackedActions = {};
-  trackData: ITrackedData = {};
   map: google.maps.Map;
   pollActionsTimeoutId;
   constructor(private identifier: string, private identifierType: string, private pk: string, private options: ITrackingOptions) {
@@ -86,17 +81,11 @@ export class HTTrackActions {
 
   trackActionsOnMap(actions: IAction[]) {
     actions.forEach((action: IAction) => {
-      let trackingData: ITrackingData = actionToTrackingData(action);
-      if (this.trackData[trackingData.id]) {
-        this.trackData[trackingData.id].track(trackingData);
+      if (this.trackActions[action.id]) {
+        this.trackActions[action.id].update(action);
       } else {
-        this.trackData[trackingData.id] = new TrackData(trackingData, this.map, this.options.mapOptions);
+        this.trackActions[action.id] = new TrackedAction(action, this.map, this.options.mapOptions);
       }
-      // if (this.trackActions[action.id]) {
-      //   this.trackActions[action.id].update(action);
-      // } else {
-      //   this.trackActions[action.id] = new TrackedAction(action, this.map, this.options.mapOptions);
-      // }
     });
   }
 
