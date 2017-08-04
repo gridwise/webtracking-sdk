@@ -1,52 +1,77 @@
-import {IAction, IMapOptions, IPlace} from "./model";
+import {IMapOptions, IPlace, ITrackingData} from "./model";
 import * as _ from "underscore";
 import {CustomRichMarker} from "./trace/custom-marker";
-import {MarkerAssets} from "./assets";
+import {Assets, MarkerAssets} from "./assets";
 import LatLng = google.maps.LatLng;
 import Polyline = google.maps.Polyline;
-import {TimeAwareAnimation} from "./trace/time-aware-animation";
 import {GetLatLng} from "./helpers";
 import {DefaultPolylineOptions} from "./defaults";
+import UserMarkerAnimation from "./trace/time-aware-animation.data";
+import {TimeAwarePolyline} from "./trace/time-aware-polyline";
 
-export class TrackedAction {
+export class TrackData {
   startMarker: CustomRichMarker = new CustomRichMarker(MarkerAssets.startPosition());
   endMarker: CustomRichMarker = new CustomRichMarker(MarkerAssets.endPosition());
   destinationMarker: CustomRichMarker = new CustomRichMarker(MarkerAssets.endPosition());
-  mapPolyline: Polyline = new google.maps.Polyline(DefaultPolylineOptions);
   userMarker: CustomRichMarker = new CustomRichMarker();
-  private timeAwareAnimation: TimeAwareAnimation;
+  mapPolyline: Polyline = new google.maps.Polyline(DefaultPolylineOptions);
+  private timeAwareAnimation: UserMarkerAnimation;
   constructor(
-    private action: IAction,
+    private trackData: ITrackingData,
     private map: google.maps.Map,
     private mapOptions: IMapOptions) {
-    if (!action || !map) return;
-    this.timeAwareAnimation = new TimeAwareAnimation(this.map, action, this.userMarker, this.mapPolyline, mapOptions);
-    this.showOnMap(action);
+    if (!trackData || !map) return;
+    let vehicleIcon = this.getVehicleAssetDetails(trackData, mapOptions);
+    this.timeAwareAnimation = new UserMarkerAnimation(this.map, this.mapPolyline, this.userMarker, vehicleIcon);
+    this.track(trackData);
   }
 
-  showOnMap(action: IAction = this.action): void {
-    if(action.display.show_summary) {
-      this.renderSummary(action);
-    } else {
-      this.renderLive(action);
+  private getVehicleAssetDetails(
+    data: ITrackingData = this.trackData,
+    mapOptions: IMapOptions = this.mapOptions) {
+    if (mapOptions.vehicleIcon) {
+      return {
+        src: mapOptions.vehicleIcon.src,
+        height: mapOptions.vehicleIcon.height
+      }
     }
+    let img = Assets.defaultHeroMarker;
+    let height = '30px';
+    let actionVehicleType = data.vehicleType;
+    switch(actionVehicleType) {
+      case 'car':
+        img = Assets.vehicleCar;
+        height = '50px';
+        break;
+      case 'motorcycle':
+        img = Assets.motorcycle;
+        height = '50px';
+        break;
+      default:
+        img = Assets.defaultHeroMarker;
+        break;
+    }
+    return {
+      src: img,
+      height
+    };
   }
 
-  private renderSummary(action: IAction = this.action) {
-    this.renderEncodedPolyline(action);
-    this.renderStartMarker(action);
-    this.renderEndMarker(action);
+  private renderSummaryData(encodedTimeAwarePolyline: string) {
+    this.renderEncodedPolyline(encodedTimeAwarePolyline);
+    this.renderStartMarker(encodedTimeAwarePolyline);
+    this.renderEndMarker(encodedTimeAwarePolyline);
   }
 
-  private renderLive(action: IAction = this.action) {
-    this.timeAwareAnimation.start(action);
-    this.renderDestinationMarker(action);
-    this.renderStartMarker(action);
+  private renderLiveData(encodedTimeAwarePolyline: string, destination: IPlace) {
+    this.timeAwareAnimation.animate(encodedTimeAwarePolyline);
+    this.renderDestinationMarker(destination);
+    this.renderStartMarker(encodedTimeAwarePolyline);
   }
 
-  private renderEncodedPolyline(action: IAction, encodedPolyline?: string) {
-    if (encodedPolyline) {
-      let polylineArray = google.maps.geometry.encoding.decodePath(encodedPolyline);
+  private renderEncodedPolyline(encodedTimeAwarePolyline: string) {
+    if (encodedTimeAwarePolyline) {
+      let polylineArray = this.getTimeAwarePolylinePathArray(encodedTimeAwarePolyline);
       this.mapPolyline.setPath(polylineArray);
       if (!this.mapPolyline.getMap()) {
         this.mapPolyline.setMap(this.map);
@@ -54,9 +79,9 @@ export class TrackedAction {
     }
   }
 
-  private renderStartMarker(action: IAction = this.action, encodedPolyline?: string) {
-    if (encodedPolyline)  {
-      let polylineArray = google.maps.geometry.encoding.decodePath(encodedPolyline);
+  private renderStartMarker(encodedTimeAwarePolyline: string) {
+    if (encodedTimeAwarePolyline)  {
+      let polylineArray = this.getTimeAwarePolylinePathArray(encodedTimeAwarePolyline);
       let startPoint = _.first(polylineArray);
       let startPosition = new google.maps.LatLng(startPoint.lat(), startPoint.lng());
       this.startMarker.setPosition(startPosition);
@@ -66,9 +91,17 @@ export class TrackedAction {
     }
   }
 
-  private renderEndMarker(action: IAction = this.action, encodedPolyline?: string) {
-    if (encodedPolyline)  {
-      let polylineArray = google.maps.geometry.encoding.decodePath(encodedPolyline);
+  private getTimeAwarePolylinePathArray(encodedTimeAwarePolyline: string) {
+    if (encodedTimeAwarePolyline) {
+      let decodedTimeAwarePolyline = new TimeAwarePolyline(encodedTimeAwarePolyline);
+      return decodedTimeAwarePolyline.getPolylinePathDataArray(decodedTimeAwarePolyline);
+    }
+    return [];
+  }
+
+  private renderEndMarker(encodedTimeAwarePolyline: string) {
+    if (encodedTimeAwarePolyline)  {
+      let polylineArray = this.getTimeAwarePolylinePathArray(encodedTimeAwarePolyline);
       let endPoint = _.last(polylineArray);
       let endPosition = new google.maps.LatLng(endPoint.lat(), endPoint.lng());
       this.endMarker.setPosition(endPosition);
@@ -78,8 +111,7 @@ export class TrackedAction {
     }
   }
 
-  private renderDestinationMarker(action: IAction = this.action, destination?: IPlace) {
-    // let finalPlace = action.expected_place;
+  private renderDestinationMarker(destination: IPlace) {
     if(destination) {
       let destinationPosition = GetLatLng(destination);
       this.destinationMarker.setPosition(destinationPosition);
@@ -95,6 +127,12 @@ export class TrackedAction {
     this.timeAwareAnimation.clearAnimationPoll();
     this.destinationMarker.clear();
     this.userMarker.clear();
+  }
+
+  private clearSummaryView() {
+    this.startMarker.setMap(null);
+    this.endMarker.setMap(null);
+    this.destinationMarker.setMap(null);
   }
 
   private fitToBounds(latLngPoints: LatLng[], bottomPadding: number) {
@@ -140,12 +178,13 @@ export class TrackedAction {
     return bounds;
   }
 
-  resetBounds(
+  public resetBounds(
     bottomPadding: number = this.mapOptions.bottomPadding || 0,
     topPadding: number = this.mapOptions.topPadding || 0) {
-    if(this.action.display.show_summary) {
-      if (this.action.encoded_polyline) {
-        let polylineArray = google.maps.geometry.encoding.decodePath(this.action.encoded_polyline);
+    let isLive = this.trackData.isLive;
+    if(!isLive) {
+      if (this.mapPolyline && this.mapPolyline.getPath()) {
+        let polylineArray = this.mapPolyline.getPath().getArray();
         this.fitToBounds(polylineArray, bottomPadding);
       }
     } else {
@@ -153,9 +192,8 @@ export class TrackedAction {
       if (this.destinationMarker.getMap() && this.destinationMarker.getPosition()) {
         bounds.extend(this.destinationMarker.getPosition());
       }
-      let userMarker = this.timeAwareAnimation.getUserMarker();
-      if (userMarker.getPosition() && userMarker.getMap()) {
-        bounds.extend(userMarker.getPosition());
+      if (this.userMarker.getPosition() && this.userMarker.getMap()) {
+        bounds.extend(this.userMarker.getPosition());
       }
       this.map.fitBounds(bounds);
       bounds = this.extendBoundsWithBottomOffset(bounds, bottomPadding);
@@ -164,45 +202,24 @@ export class TrackedAction {
     }
   }
 
-  update(action: IAction) {
-    this.action = action;
-    if(action.display.show_summary) {
-      this.clearLiveView();
-      this.renderSummary(action);
-    } else {
-      this.renderDestinationMarker(action);
-      this.renderStartMarker(action);
-      this.timeAwareAnimation.update(action);
-    }
-  }
-
-  updateMapOptions(mapOptions: IMapOptions) {
-    this.mapOptions = {
-      ...this.mapOptions,
-      mapOptions
-    };
-  }
-
-  hideOnMap() {
+  public clearMap() {
     this.clearLiveView();
-    this.startMarker.setMap(null);
-    this.endMarker.setMap(null);
-    this.destinationMarker.setMap(null);
+    this.clearSummaryView();
     this.mapPolyline.setMap(null);
-    this.userMarker.setMap(null);
   }
 
-  updateUserMarkerIcon(icon: string) {
-    this.mapOptions = {
-      ...this.mapOptions,
-      vehicleIcon: {
-        ...this.mapOptions.vehicleIcon,
-        src: icon
-      }
+  public track(trackData: ITrackingData = this.trackData, mapOptions: IMapOptions = this.mapOptions): void {
+    this.mapOptions = mapOptions;
+    this.trackData = trackData;
+    if(trackData.isLive) {
+      this.renderLiveData(trackData.encodedTimeAwarePolyline, trackData.destination);
+    } else {
+      this.clearLiveView();
+      this.renderSummaryData(trackData.encodedTimeAwarePolyline);
     }
   }
 }
 
-export function trackActionOnMap(action: IAction, map: google.maps.Map, options: IMapOptions) {
-  return new TrackedAction(action, map, options);
+export function trackDataOnMap(data: ITrackingData, map: google.maps.Map, options: IMapOptions) {
+  return new TrackData(data, map, options);
 }
