@@ -1,4 +1,4 @@
-import {IAction, IMapOptions, IPlace} from "./model";
+import {IAction, IMapOptions} from "./model";
 import * as _ from "underscore";
 import {CustomRichMarker} from "./trace/custom-marker";
 import {MarkerAssets} from "./assets";
@@ -44,9 +44,9 @@ export class TrackedAction {
     this.renderStartMarker(action);
   }
 
-  private renderEncodedPolyline(action: IAction, encodedPolyline?: string) {
-    if (encodedPolyline) {
-      let polylineArray = google.maps.geometry.encoding.decodePath(encodedPolyline);
+  private renderEncodedPolyline(action: IAction) {
+    if (action.encoded_polyline) {
+      let polylineArray = google.maps.geometry.encoding.decodePath(action.encoded_polyline);
       this.mapPolyline.setPath(polylineArray);
       if (!this.mapPolyline.getMap()) {
         this.mapPolyline.setMap(this.map);
@@ -54,9 +54,9 @@ export class TrackedAction {
     }
   }
 
-  private renderStartMarker(action: IAction = this.action, encodedPolyline?: string) {
-    if (encodedPolyline)  {
-      let polylineArray = google.maps.geometry.encoding.decodePath(encodedPolyline);
+  private renderStartMarker(action: IAction = this.action) {
+    if (action.encoded_polyline)  {
+      let polylineArray = google.maps.geometry.encoding.decodePath(action.encoded_polyline);
       let startPoint = _.first(polylineArray);
       let startPosition = new google.maps.LatLng(startPoint.lat(), startPoint.lng());
       this.startMarker.setPosition(startPosition);
@@ -66,9 +66,9 @@ export class TrackedAction {
     }
   }
 
-  private renderEndMarker(action: IAction = this.action, encodedPolyline?: string) {
-    if (encodedPolyline)  {
-      let polylineArray = google.maps.geometry.encoding.decodePath(encodedPolyline);
+  private renderEndMarker(action: IAction = this.action) {
+    if (this.action.encoded_polyline)  {
+      let polylineArray = google.maps.geometry.encoding.decodePath(action.encoded_polyline);
       let endPoint = _.last(polylineArray);
       let endPosition = new google.maps.LatLng(endPoint.lat(), endPoint.lng());
       this.endMarker.setPosition(endPosition);
@@ -78,14 +78,15 @@ export class TrackedAction {
     }
   }
 
-  private renderDestinationMarker(action: IAction = this.action, destination?: IPlace) {
-    // let finalPlace = action.expected_place;
-    if(destination) {
-      let destinationPosition = GetLatLng(destination);
+  private renderDestinationMarker(action: IAction = this.action) {
+    let finalPlace = action.completed_place || action.expected_place;
+    if(finalPlace) {
+      let destinationPosition = GetLatLng(finalPlace);
       this.destinationMarker.setPosition(destinationPosition);
       if (!this.destinationMarker.getMap()) {
         this.destinationMarker.setMap(this.map);
       }
+      // this.destinationMarker.render(destinationPosition, this.map);
     } else {
       this.destinationMarker.clear();
     }
