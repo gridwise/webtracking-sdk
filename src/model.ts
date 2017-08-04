@@ -121,8 +121,8 @@ export interface ITrackingOptions {
     mapId: string; //id of DOM where map is to be rendered
     mapOptions?: IMapOptions;
     onError?: (error: any) => void;
-    onReady?: (trackedActions: ITrackedActions, actions: IAction[], map: google.maps.Map) => void;
-    onUpdate?: (trackedActions: ITrackedActions, actions: IAction[]) => void;
+    onReady?: (trackedData: ITrackedData, actions: IAction[], map: google.maps.Map) => void;
+    onUpdate?: (trackedData: ITrackedData, actions: IAction[]) => void;
     onAccountReady?: (subAccount: ISubAccount, actions: IAction[]) => void;
 }
 
