@@ -33,7 +33,7 @@ export class TimeAwarePolyline {
         return encodedPolyline != this.encodedPolyline;
     }
 
-    getPolylinePathDataArray(encodedPolyline): LatLng[] {
+    getPolylinePathDataArray(): number[] {
       if (this.timeAwarePolyline && this.timeAwarePolyline.length > 0) {
         let last = this.getLatestTime();
         return this.getPolylineToTime(last).path;

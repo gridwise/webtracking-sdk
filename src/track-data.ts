@@ -72,7 +72,10 @@ export class TrackData {
   private renderEncodedPolyline(encodedTimeAwarePolyline: string) {
     if (encodedTimeAwarePolyline) {
       let polylineArray = this.getTimeAwarePolylinePathArray(encodedTimeAwarePolyline);
-      this.mapPolyline.setPath(polylineArray);
+      let polylineLatLngArray = polylineArray.map((value) => {
+        return (new google.maps.LatLng(value[0], value[1]));
+      });
+      this.mapPolyline.setPath(polylineLatLngArray);
       if (!this.mapPolyline.getMap()) {
         this.mapPolyline.setMap(this.map);
       }
@@ -94,7 +97,7 @@ export class TrackData {
   private getTimeAwarePolylinePathArray(encodedTimeAwarePolyline: string) {
     if (encodedTimeAwarePolyline) {
       let decodedTimeAwarePolyline = new TimeAwarePolyline(encodedTimeAwarePolyline);
-      return decodedTimeAwarePolyline.getPolylinePathDataArray(decodedTimeAwarePolyline);
+      return decodedTimeAwarePolyline.getPolylinePathDataArray();
     }
     return [];
   }
