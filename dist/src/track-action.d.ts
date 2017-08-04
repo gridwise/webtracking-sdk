@@ -16,10 +16,10 @@ export declare class TrackedAction {
     showOnMap(action?: IAction): void;
     private renderSummary(action?);
     private renderLive(action?);
-    private renderEncodedPolyline(action, encodedPolyline?);
-    private renderStartMarker(action?, encodedPolyline?);
-    private renderEndMarker(action?, encodedPolyline?);
-    private renderDestinationMarker(action?, destination?);
+    private renderEncodedPolyline(action);
+    private renderStartMarker(action?);
+    private renderEndMarker(action?);
+    private renderDestinationMarker(action?);
     private clearLiveView();
     private fitToBounds(latLngPoints, bottomPadding);
     private fitToBoundsWithBottomPadding(latLngs, bottomPadding);
