@@ -26,7 +26,7 @@ export class HTTrackActions {
     if (this.options.onReady) {
       this.options.onReady(this.trackMultipleData, actions, this.map);
     }
-    this.fetchSubaccountFromIdentifier(identifier, identifierType, (subAccount: ISubAccount) => {
+    this.fetchSubaccountFromIdentifier(identifier, identifierType, (subAccount: ISubAccountData) => {
       if (this.options.onAccountReady) {
         this.options.onAccountReady(subAccount, actions);
       }

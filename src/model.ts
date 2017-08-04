@@ -123,11 +123,11 @@ export interface ITrackingOptions {
     onError?: (error: any) => void;
     onReady?: (trackedData: ITrackedData, actions: IAction[], map: google.maps.Map) => void;
     onUpdate?: (trackedData: ITrackedData, actions: IAction[]) => void;
-    onAccountReady?: (subAccount: ISubAccount, actions: IAction[]) => void;
+    onAccountReady?: (subAccount: ISubAccountData, actions: IAction[]) => void;
 }
 
 export interface IMapOptions {
-    gMapsStyle?: MapTypeStyle[];
+    gMapsStyle?: MapTypeStyle[] | null;
     bottomPadding?: number;
     topPadding?: number;
     vehicleIcon?: CustomVehicleIcon;
