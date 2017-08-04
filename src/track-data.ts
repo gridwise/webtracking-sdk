@@ -83,7 +83,7 @@ export class TrackData {
     if (encodedTimeAwarePolyline)  {
       let polylineArray = this.getTimeAwarePolylinePathArray(encodedTimeAwarePolyline);
       let startPoint = _.first(polylineArray);
-      let startPosition = new google.maps.LatLng(startPoint[0], startPoint.lng[1]);
+      let startPosition = new google.maps.LatLng(startPoint[0], startPoint[1]);
       this.startMarker.setPosition(startPosition);
       if (!this.startMarker.getMap()) {
         this.startMarker.setMap(this.map);
